@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css';
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, generatedAt }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +15,8 @@ export default function Todo({ todo }) {
         </h1>
 
         <p className={styles.description}>
-          TODO: <code>{JSON.stringify(todo)}</code>
+          TODO: <code>{JSON.stringify(todo)}</code> <br />
+          Page generated at: <code>{generatedAt}</code>
         </p>
 
         <div className={styles.grid}>
@@ -126,19 +127,19 @@ export async function getStaticProps({ params }) {
 
   // Pass data to the page via props
   return {
-    props: { todo }, revalidate: 5
+    props: { todo, generatedAt: new Date().toISOString() }, revalidate: 10
   }
 }
 
-export async function getStaticPaths(id) {
+export async function getStaticPaths() {
   console.log('Fetching https://jsonplaceholder.typicode.com/todos...')
   const res = await fetch(`https://jsonplaceholder.typicode.com/todos`)
   const todos = await res.json()
   console.log('Fetching done')
 
   // Get the paths we want to pre-render based on todos
-  const paths = todos.map((todo) => ({
-    params: { id: toString(todo.id) },
+  const paths = todos.slice(0, 10).map((todo) => ({
+    params: { id: todo.id?.toString() },
   }))
 
   // We'll pre-render only these paths at build time.

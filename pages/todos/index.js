@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css';
 
-export default function Todos({ todos }) {
+export default function Todos({ todos, generatedAt }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +15,8 @@ export default function Todos({ todos }) {
         </h1>
 
         <p className={styles.description}>
-          Todos count: {todos?.length}
+          Todos count: {todos?.length} <br />
+          Page generated at: <code>{generatedAt}</code>
         </p>
 
         <div className={styles.grid}>
@@ -124,6 +125,6 @@ export async function getStaticProps({ params }) {
 
   // Pass data to the page via props
   return {
-    props: { todos }, revalidate: 10
+    props: { todos, generatedAt: new Date().toISOString() }, revalidate: 10
   }
 }
