@@ -125,6 +125,6 @@ export async function getStaticProps({ params }) {
 
   // Pass data to the page via props
   return {
-    props: { todos, generatedAt: new Date().toISOString() }, revalidate: 10
+    props: { todos, generatedAt: new Date().toISOString() }
   }
 }
